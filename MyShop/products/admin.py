@@ -16,7 +16,3 @@ class ProductsAdmin(admin.ModelAdmin):
     list_display = ['product_name', 'slug', 'category', 'price']
 
 
-@admin.register(product_details)
-class productDetailsAdmin(admin.ModelAdmin):
-    list_display = ['product', 'brand', 'product_description']
-

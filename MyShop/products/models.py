@@ -1,4 +1,5 @@
 from distutils.command.upload import upload
+from email.policy import default
 from enum import unique
 from unicodedata import name
 from django.db import models
@@ -23,21 +24,16 @@ class Product(BaseModel):
     slug = models.SlugField(unique=True, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name="product_category")
     price = models.IntegerField()
+    brand = models.CharField(max_length = 100, null = True)
+    product_description = models.TextField(null = True)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs): 
         self.slug = slugify(self.product_name)
         super(Product, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.product_name
 
-class product_details(BaseModel):
-    product = models.ForeignKey(Product, on_delete = models.CASCADE, related_name="product")
-    brand = models.CharField(max_length = 100)
-    product_description = models.TextField()
-    
-    def __str__(self):
-        return self.product.product_name
     
 class productImage(BaseModel):
     products = models.ForeignKey(Product, on_delete = models.CASCADE, related_name='product_images')
