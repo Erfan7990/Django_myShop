@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-def all_products(request):
+def all_products(request,slug):
     return render(request, 'products/all_products.html')
 
 def product_details(request):
