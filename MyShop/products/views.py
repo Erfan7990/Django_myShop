@@ -35,3 +35,7 @@ def product_details(request, slug, product_slug):
         return render(request, 'products/product_details.html', context = context)
     except Exception as e:
         print(e)
+
+        
+def add_to_cart(request):
+    return render(request, 'products/add_to_card.html')
