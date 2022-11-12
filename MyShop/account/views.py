@@ -64,27 +64,23 @@ def logout_page(request):
 
 
 def user_profile(request):
-    # userForm = ProfileForm()
+    userForm = ProfileForm()
     try:
+        # print(profile_obj)
         if request.method == "POST":
-            userForm = ProfileForm(request.POST)
-            print(userForm)
+            profile_obj = Profile.objects.get(user = request.user)
+            userForm = ProfileForm(request.POST, instance = profile_obj)
             if userForm.is_valid():
-                full_name = userForm.cleaned_data['full_name']
-                address = userForm.changed_data['address']
-                country = userForm.changed_data['country']
-                city = userForm.changed_data['city']
-                zipcode = userForm.changed_data['zipcode']
-                phone = userForm.changed_data['phone']
-                save_user_form = Profile(full_name = full_name, address = address, country = country, city = city, zipcode = zipcode, phone = phone)
-                save_user_form.save()
+                userForm.save()
                 messages.success(request, 'Successfully save user data!!')
                 return HttpResponseRedirect(request.path_info)
         else:
-            userForm = ProfileForm()
+            profile_obj = Profile.objects.get(user = request.user)
+
     except Exception as e:
         print(e)
     context = {
-        'userForm': userForm
+        'userForm': userForm,
+        'profile': profile_obj
     }
     return render(request, 'account/profile.html', context)

@@ -29,6 +29,7 @@ class ProfileForm(forms.ModelForm):
     phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-box', 'placeholder': 'Mobile Number'}))
     class Meta:
         model = Profile
-        fields = ['full_name', 'address', 'country', 'city', 'zipcode', 'phone']
+        fields = ('__all__')
+        exclude = ('user',)
 
      
