@@ -1,18 +1,22 @@
 from email import message
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.template import RequestContext
 from .models import *
 from django.http import HttpResponseRedirect, HttpResponse
 # Create your views here.
 
 def all_products(request, slug):
+    
     try:
+        
         product_category = Category.objects.filter(slug = slug)
         if product_category:
             AllProducts = Product.objects.filter(category__slug =slug)
-        # print("products", AllProducts)
         context = {'AllProducts':AllProducts}
-        return render(request, 'products/all_products.html',context = context)
+        # print("products", AllProducts)
+        return render(request, 'products/all_products.html',context)
+            # 
 
     except Exception as e:
         print(e)
@@ -32,10 +36,8 @@ def product_details(request, slug, product_slug):
             messages.warning(request, 'No Category found')
             return HttpResponseRedirect(request.path_info)
 
-        return render(request, 'products/product_details.html', context = context)
+        return render(request, 'products/product_details.html', context)
     except Exception as e:
         print(e)
 
         
-def add_to_cart(request):
-    return render(request, 'products/add_to_card.html')

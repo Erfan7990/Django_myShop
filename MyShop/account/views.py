@@ -25,8 +25,8 @@ def login_page(request):
 
             if user_obj:
                 login(request, user_obj)
-                username = User.username
-                return render(request, 'main/index.html', {'username': username})
+                # username = User.username
+                return redirect('index')
             else:
                 messages.warning(request, 'Username or password is not correct')
                 return HttpResponseRedirect(request.path_info)
