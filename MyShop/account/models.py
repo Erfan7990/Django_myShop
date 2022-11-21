@@ -2,7 +2,7 @@ from django.db import models
 from base.models import BaseModel
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from order.models import Orders
 from django.contrib.auth.models import User
 
 class Profile(BaseModel):

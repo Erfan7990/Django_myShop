@@ -35,4 +35,3 @@ class Orders(BaseModel):
         for order_item in self.orderItems.all():
             total += float(order_item.get_total_cart_price())
         return total
-    

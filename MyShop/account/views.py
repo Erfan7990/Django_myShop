@@ -1,17 +1,19 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect ,HttpResponse
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.template import RequestContext
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .models import Profile
 from .forms import ProfileForm
 
 # Create your views here.
 def login_page(request):
-    try:
+        # if request.user.is_authenticated:
+        #     return redirect('index')
+           
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
@@ -23,7 +25,7 @@ def login_page(request):
             
             user_obj = authenticate(username = username, password = password)
 
-            if user_obj:
+            if user_obj is not None:
                 login(request, user_obj)
                 # username = User.username
                 return redirect('index')
@@ -32,9 +34,8 @@ def login_page(request):
                 return HttpResponseRedirect(request.path_info)
 
         # messages.warning(request, 'Invalid Information')
+        # context = { 'username': username}
         return render(request, 'account/login.html')
-    except Exception as e:
-        print(e)
 
 
 
@@ -60,7 +61,7 @@ def registration(request):
 
 def logout_page(request):
     logout(request)
-    return redirect('login') 
+    return render(request, 'account/login.html')
 
 
 def user_profile(request):
