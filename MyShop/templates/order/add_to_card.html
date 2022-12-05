@@ -20,7 +20,10 @@
                         {% comment %} {% if request.user.is_authenticate %} {% endcomment %}
                         {% for cart in carts %}
                         <tr>
-                            <td class="align-middle"><img src="/media/{{cart.items.product_images.first.image}}" alt="" style="width: 50px;">{{cart.items.product_name}}</td>
+                            <td class="align-middle"> <a href=""> <img src="/media/{{cart.items.product_images.first.image}}" alt="" style="width: 50px;">{{cart.items.product_name}}</a></td>
+                            <td class="align-middle">{{cart.size}}</td>
+                            <td class="align-middle">{{cart.color}}</td>
+                            
                             <td class="align-middle">${{cart.items.price}}</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
@@ -38,7 +41,7 @@
                                 </div>
                             </td>
                             <td class="align-middle">${{cart.get_total_cart_price}}</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            <td class="align-middle"><a href="{% url 'remove_card' cart.items.uid %}" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></a></td>
                         </tr>
                         {% endfor %}
                         {% comment %} {% endif %} {% endcomment %}

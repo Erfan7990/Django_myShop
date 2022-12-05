@@ -1,16 +1,22 @@
 from django.shortcuts import render, get_list_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse
-from products.models import Product
+from products.models import *
 from .models import *
 # Create your views here.
 
 def card_item(request):
+
+
     carts = Cart.objects.filter(user = request.user, purchased=False)
     order = Orders.objects.filter(user = request.user, ordered=False)
-  
+    
+    # if Category.objects.filter(slug = slug):
+    #     if Product.objects.filter(slug = product_slug):
+    #         product = Product.objects.get(slug = product_slug)
     context = {
         'carts': carts,
-        'order': order[0].get_Total_orders_price()
+        'order': order[0].get_Total_orders_price(),
+        # 'product': product
     }
    
     return render(request, 'order/add_to_card.html', context)
@@ -24,10 +30,22 @@ def add_to_cart(request, uid):
     if order_obj.exists():
         order = order_obj[0]
         if order.orderItems.filter(items = items).exists():
-            cart_item[0].quantity += 1
+            size = request.POST.get('size')
+            color = request.POST.get('color')
+            quantity = request.POST.get('quantity')
+            if quantity:
+                cart_item[0].quantity += int(quantity)
+            else:
+                cart_item[0].quantity += 1
+            cart_item[0].size = size
+            cart_item[0].color = color
             cart_item[0].save()
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
+            size = request.POST.get('size')
+            color = request.POST.get('color')
+            cart_item[0].size = size
+            cart_item[0].color = color
             order.orderItems.add(cart_item[0])
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
@@ -37,3 +55,19 @@ def add_to_cart(request, uid):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     # return render(request, 'products/add_to_card.html')
+
+def remove_item(request, uid):
+    items = Product.objects.get(uid = uid)
+    orders = Orders.objects.filter(user = request.user, ordered = False)
+
+    if orders.exists():
+        order = orders[0]
+        if order.orderItems.filter(items=items).exists():
+            order_item = Cart.objects.filter(items=items, user=request.user, purchased=False)[0]
+            order.orderItems.remove(order_item)
+            order_item.delete()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

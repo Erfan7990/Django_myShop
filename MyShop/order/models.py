@@ -8,6 +8,8 @@ from base.models import BaseModel
 class Cart(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart")
     items = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='items')
+    size = models.CharField(null=True, blank=True, max_length=50)
+    color = models.CharField(null=True, blank=True, max_length=50)
     quantity = models.IntegerField(default=1)
     purchased = models.BooleanField(default=False)
 

@@ -28,7 +28,7 @@ def product_details(request, slug, product_slug):
             if Product.objects.filter(slug = product_slug):
                 product = Product.objects.get(slug = product_slug)
                 context = {'product': product}
-                print("product", product.product_images.all())
+                # print("product", product.product_images.all())
             else:
                 messages.warning(request, 'No Product found')
                 return HttpResponseRedirect(request.path_info)

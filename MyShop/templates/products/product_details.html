@@ -40,34 +40,43 @@
             </div>
             <h3 class="font-weight-semi-bold mb-4">${{product.price}}.00</h3>
             <p class="mb-4">{{product.product_description}}</p>
+            
+            <form method="post" action = "{% url 'add_to_card' product.uid %}">
+            {% csrf_token %}
+            {% comment %} size variant {% endcomment %}
+            {% if product.variationvalue_set.sizes %}
             <div class="d-flex mb-3">
                 <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
                 <div class="details-filter-row details-row-size">
                     <div class="select-custom">
                         <select name="size" id="size" class="form-control">
                             <option value="#" selected="selected">Select a size</option>
-                            <option value="s">Small</option>
-                            <option value="m">Medium</option>
-                            <option value="l">Large</option>
-                            <option value="xl">Extra Large</option>
+                            {% for size in product.variationvalue_set.sizes %}
+                            <option name='size' value="{{size.name}}">{{size.name}}</option>
+                            {% endfor %}
                         </select>
                     </div><!-- End .select-custom -->   
                 </div><!-- End .details-filter-row -->
             </div>
+            {% endif %}
+
+
+            {% if product.variationvalue_set.colors %}
             <div class="d-flex mb-4">
                 <p class="text-dark font-weight-medium mb-0 mr-3">Colors:</p>
                 <div class="details-filter-row details-row-size">
                     <div class="select-custom">
-                        <select name="size" id="size" class="form-control">
-                            <option value="#" selected="selected">Select a size</option>
-                            <option value="s">Small</option>
-                            <option value="m">Medium</option>
-                            <option value="l">Large</option>
-                            <option value="xl">Extra Large</option>
+                        <select name="color" id="size" class="form-control">
+                            <option value="#" selected="selected">Select a color</option>
+                            {% for color in product.variationvalue_set.colors %}
+                            <option name='color' value="{{color.name}}">{{color.name}}</option>
+                            {% endfor %}
                         </select>
                     </div><!-- End .select-custom -->   
                 </div><!-- End .details-filter-row -->
             </div>
+            {% endif %}
+
             <div class="d-flex align-items-center mb-4 pt-2">
                 <div class="input-group quantity mr-3" style="width: 130px;">
                     <div class="input-group-btn">
@@ -75,15 +84,16 @@
                         <i class="fa fa-minus"></i>
                         </button>
                     </div>
-                    <input type="text" class="form-control bg-secondary text-center" value="1">
+                    <input type="text" name="quantity" class="form-control bg-secondary text-center" value="1">
                     <div class="input-group-btn">
                         <button class="btn btn-primary btn-plus">
                             <i class="fa fa-plus"></i>
                         </button>
                     </div>
                 </div>
-                <a href="{% url 'add_to_card' product.uid %}" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</a>
+                <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
             </div>
+        </form>
             <div class="d-flex pt-2">
                 <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
                 <div class="d-inline-flex">

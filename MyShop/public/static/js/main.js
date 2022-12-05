@@ -85,10 +85,10 @@
 
 
     // Product Quantity
-    $('.quantity button').on('click', function () {
-        var button = $(this);
-        var oldValue = button.parent().parent().find('input').val();
-        if (button.hasClass('btn-plus')) {
+    $('.quantity span').on('click', function () {
+        var span = $(this);
+        var oldValue = span.parent().parent().find('input').val();
+        if (span.hasClass('btn-plus')) {
             var newVal = parseFloat(oldValue) + 1;
         } else {
             if (oldValue > 0) {
@@ -97,7 +97,7 @@
                 newVal = 0;
             }
         }
-        button.parent().parent().find('input').val(newVal);
+        span.parent().parent().find('input').val(newVal);
     });
     
 })(jQuery);

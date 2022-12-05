@@ -16,3 +16,6 @@ class ProductsAdmin(admin.ModelAdmin):
     list_display = ['product_name', 'slug', 'category', 'price']
 
 
+@admin.register(variationValue)
+class VariationValueAdmin(admin.ModelAdmin):
+    list_display = ['variation', 'name', 'product', 'price']

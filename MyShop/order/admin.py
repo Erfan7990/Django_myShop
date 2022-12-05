@@ -5,7 +5,7 @@ from .models import *
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
-    list_display = ['user', 'items', 'quantity', 'purchased', 'price']
+    list_display = ['user', 'items', 'quantity','size', 'color', 'purchased', 'price']
 
     def price(self, obj):
         price = obj.get_total_cart_price()
