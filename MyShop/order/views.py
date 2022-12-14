@@ -71,3 +71,51 @@ def remove_item(request, uid):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def increase_quantity(request, uid):
+    items = Product.objects.get(uid = uid)
+    print("========")
+    print(items.uid)
+    print("========")
+
+    orders = Orders.objects.filter(user = request.user, ordered = False)
+
+    if orders.exists():
+        order = orders[0]
+        if order.orderItems.filter(items = items).exists():
+            order_item = Cart.objects.filter(items = items, user = request.user, purchased = False)[0]
+            if order_item.quantity >= 1:
+                order_item.quantity += 1
+                order_item.save()
+                return redirect('card_item')
+
+            else:
+                return redirect('card_item')
+        else:
+            return redirect('card_item')
+    else:
+        return redirect('card_item')
+
+
+def decrease_quantity(request, uid):
+    items = Product.objects.get(uid = uid)
+    orders = Orders.objects.filter(user = request.user, ordered = False)
+
+    if orders.exists():
+        order = orders[0]
+        if order.orderItems.filter(items = items).exists():
+            order_item = Cart.objects.filter(items = items, user = request.user, purchased = False)[0]
+            if order_item.quantity > 1:
+                order_item.quantity -= 1
+                order_item.save()
+                return redirect('card_item')
+
+            else:
+                order.orderItems.remove(order_item)
+                order_item.delete()
+                return redirect('card_item')
+        else:
+            return redirect('card_item')
+    else:
+        return redirect('card_item')
+
