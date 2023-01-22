@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'main',
     'account',
     'products',
-    'order'
+    'order',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,7 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# SSLcommerce Implementation
+
+STORE_ID = 'mysho63c2d30643c12'
+STORE_PASS = 'mysho63c2d30643c12@ssl'

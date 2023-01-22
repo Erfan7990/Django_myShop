@@ -1,7 +1,3 @@
-from distutils.command.upload import upload
-from email.policy import default
-from enum import unique
-from unicodedata import name
 from django.db import models
 from base.models import BaseModel
 from django.utils.text import slugify
@@ -66,3 +62,4 @@ class variationValue(BaseModel):
     def __str__(self):
         return self.name
 
+    

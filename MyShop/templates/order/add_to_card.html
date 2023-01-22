@@ -26,7 +26,13 @@
                             <td class="align-middle">{{cart.size}}</td>
                             <td class="align-middle">{{cart.color}}</td>
                             
-                            <td class="align-middle">${{cart.items.price}}</td>
+                            <td class="align-middle">
+                                {% if cart.get_variation_base_price %}
+                                ${{cart.get_variation_base_price}}
+                                {% else %}
+                                ${{cart.items.price}}  
+                                {% endif %}
+                            </td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
@@ -42,7 +48,13 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle">${{cart.get_total_cart_price}}</td>
+                            <td class="align-middle">
+                                {% if cart.total_price %}
+                                ${{cart.total_price}}
+                                {% else %}
+                                ${{cart.get_total_cart_price}}
+                                {% endif %}
+                            </td>
                             <td class="align-middle"><a href="{% url 'remove_card' cart.items.uid %}" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></a></td>
                         </tr>
                         {% endfor %}
@@ -78,7 +90,7 @@
                             <h5 class="font-weight-bold">Total</h5>
                             <h5 class="font-weight-bold">${{order}}</h5>
                         </div>
-                        <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                        <a href="{% url 'checkout' %}" class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</a>
                     </div>
                 </div>
             </div>

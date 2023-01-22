@@ -13,7 +13,7 @@ class CartAdmin(admin.ModelAdmin):
 
 @admin.register(Orders)
 class OrderAdmin(admin.ModelAdmin): 
-    list_display = ['user','order_items',  'Order_price', 'paymentId', 'orderId']
+    list_display = ['user','order_items',  'Order_price', 'paymentId', 'orderId', 'payment_method']
     
     def order_items(self, obj):
         product = obj.orderItems
@@ -23,5 +23,12 @@ class OrderAdmin(admin.ModelAdmin):
         price = obj.get_Total_orders_price()
         return price
 
+@admin.register(Banner)
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ['product_name', 'image']
+
+    def product_name(self, obj):
+            product_name = obj.product.product_name
+            return product_name
 # admin.site.register(Cart)
 # admin.site.register(Orders)

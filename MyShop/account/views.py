@@ -6,8 +6,18 @@ from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from .models import Profile
+# from .models import Profile
 from .forms import ProfileForm
+from payment.forms import BillingAddressForm
+
+#models
+from products.models import *
+from order.models import *
+from account.models import *
+from payment.models import *
+
+#default template
+from django.views.generic import TemplateView
 
 # Create your views here.
 def login_page(request):
@@ -64,24 +74,45 @@ def logout_page(request):
     return render(request, 'account/login.html')
 
 
-def user_profile(request):
-    userForm = ProfileForm()
-    try:
-        # print(profile_obj)
-        if request.method == "POST":
-            profile_obj = Profile.objects.get(user = request.user)
-            userForm = ProfileForm(request.POST, instance = profile_obj)
-            if userForm.is_valid():
-                userForm.save()
-                messages.success(request, 'Successfully save user data!!')
-                return HttpResponseRedirect(request.path_info)
-        else:
-            profile_obj = Profile.objects.get(user = request.user)
+# def user_profile(request):
+#     userForm = ProfileForm()
+#     try:
+#         # print(profile_obj)
+#         if request.method == "POST":
+#             profile_obj = Profile.objects.get(user = request.user)
+#             userForm = ProfileForm(request.POST, instance = profile_obj)
+#             if userForm.is_valid():
+#                 userForm.save()
+#                 messages.success(request, 'Successfully save user data!!')
+#                 return HttpResponseRedirect(request.path_info)
+#         else:
+#             profile_obj = Profile.objects.get(user = request.user)
 
-    except Exception as e:
-        print(e)
-    context = {
-        'userForm': userForm,
-        'profile': profile_obj
-    }
-    return render(request, 'account/profile.html', context)
+#     except Exception as e:
+#         print(e)
+#     context = {
+#         'userForm': userForm,
+#         'profile': profile_obj
+#     }
+#     return render(request, 'account/profile.html', context)
+
+class user_profile(TemplateView):
+    def get(self, request, *args, **kwargs):
+        orders = Orders.objects.filter(user= request.user, ordered=True)
+        billingAddress = BillingAddress.objects.get(user=request.user)
+        Billing_Address_forms = BillingAddressForm(instance=billingAddress)
+        context={
+            'orders' : orders,
+            'billingAddress': billingAddress,
+            'Billing_Address_forms': Billing_Address_forms
+        }
+        return render(request, 'account/profile.html', context)
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            billingAddress = BillingAddress.objects.get(user=request.user)
+            Billing_Address_forms = BillingAddressForm(request.POST, instance=billingAddress)
+            if Billing_Address_forms.is_valid():
+                Billing_Address_forms.save()
+           
+                return redirect('profile')
