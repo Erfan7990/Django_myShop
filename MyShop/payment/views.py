@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 # models
 from .models import *
@@ -13,7 +14,7 @@ from django.views.generic import TemplateView
 
 
 # Create your views here.
-
+# @login_required(login_url='login')
 class Payment_checkout(TemplateView):
     def get(self, request, *args, **kwargs):
         billing_address = BillingAddress.objects.get_or_create(user = request.user or None)
@@ -24,13 +25,16 @@ class Payment_checkout(TemplateView):
         order_qs =  Orders.objects.filter(user = request.user, ordered=False)
         order_items = order_qs[0].orderItems.all()
         order_total = order_qs[0].get_Total_orders_price()
+        print("=======================")
+        print(len(order_items))
+        print("=======================")
 
         context = {
-            'Billing_Address_forms': billing_forms,
-            'order_items': order_items,
-            'order_total': order_total,
-            'payment_form': paymentForm
-        }
+                'Billing_Address_forms': billing_forms,
+                'order_items': order_items,
+                'order_total': order_total,
+                'payment_form': paymentForm
+            }
 
         return render(request, 'payment/checkout.html', context)
 
@@ -66,6 +70,6 @@ class Payment_checkout(TemplateView):
                     
 
 
-                    return redirect('card_item')
+                return redirect('card_item')
         
     # return render(request, 'payment/checkout.html')

@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_list_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.decorators import login_required
 from products.models import *
 from .models import *
 # Create your views here.
 
+@login_required(login_url='login')
 def card_item(request):
 
 
@@ -21,6 +23,8 @@ def card_item(request):
    
     return render(request, 'order/add_to_card.html', context)
 
+
+@login_required(login_url='login')
 def add_to_cart(request, uid):
     # items = get_list_or_404(Product, uid = uid)
     items = Product.objects.get(uid=uid)
@@ -56,6 +60,7 @@ def add_to_cart(request, uid):
 
     # return render(request, 'products/add_to_card.html')
 
+@login_required(login_url='login')
 def remove_item(request, uid):
     items = Product.objects.get(uid = uid)
     orders = Orders.objects.filter(user = request.user, ordered = False)
@@ -72,6 +77,7 @@ def remove_item(request, uid):
     else:
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+@login_required(login_url='login')
 def increase_quantity(request, uid):
     items = Product.objects.get(uid = uid)
     print("========")
@@ -96,7 +102,7 @@ def increase_quantity(request, uid):
     else:
         return redirect('card_item')
 
-
+@login_required(login_url='login')
 def decrease_quantity(request, uid):
     items = Product.objects.get(uid = uid)
     orders = Orders.objects.filter(user = request.user, ordered = False)

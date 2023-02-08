@@ -96,18 +96,22 @@ def logout_page(request):
 #     }
 #     return render(request, 'account/profile.html', context)
 
+# @login_required(login_url='login')
 class user_profile(TemplateView):
     def get(self, request, *args, **kwargs):
-        orders = Orders.objects.filter(user= request.user, ordered=True)
-        billingAddress = BillingAddress.objects.get(user=request.user)
-        Billing_Address_forms = BillingAddressForm(instance=billingAddress)
-        context={
-            'orders' : orders,
-            'billingAddress': billingAddress,
-            'Billing_Address_forms': Billing_Address_forms
-        }
-        return render(request, 'account/profile.html', context)
+        if request.user.is_authenticated:
 
+            orders = Orders.objects.filter(user= request.user, ordered=True)
+            billingAddress = BillingAddress.objects.get(user=request.user)
+            Billing_Address_forms = BillingAddressForm(instance=billingAddress)
+            context={
+                'orders' : orders,
+                'billingAddress': billingAddress,
+                'Billing_Address_forms': Billing_Address_forms
+            }
+            return render(request, 'account/profile.html', context)
+        else:
+            return redirect('login')
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             billingAddress = BillingAddress.objects.get(user=request.user)
