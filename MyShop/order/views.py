@@ -8,21 +8,25 @@ from .models import *
 @login_required(login_url='login')
 def card_item(request):
 
+    try:
+        
 
-    carts = Cart.objects.filter(user = request.user, purchased=False)
-    order = Orders.objects.filter(user = request.user, ordered=False)
+        carts = Cart.objects.filter(user = request.user, purchased=False)
+        order = Orders.objects.filter(user = request.user, ordered=False)
+        
+        # if Category.objects.filter(slug = slug):
+        #     if Product.objects.filter(slug = product_slug):
+        #         product = Product.objects.get(slug = product_slug)
+        context = {
+            'carts': carts,
+            'order': order[0].get_Total_orders_price(),
+            # 'product': product
+        }
     
-    # if Category.objects.filter(slug = slug):
-    #     if Product.objects.filter(slug = product_slug):
-    #         product = Product.objects.get(slug = product_slug)
-    context = {
-        'carts': carts,
-        'order': order[0].get_Total_orders_price(),
-        # 'product': product
-    }
-   
-    return render(request, 'order/add_to_card.html', context)
-
+        return render(request, 'order/add_to_card.html', context)
+    except Exception as e:
+        return render(request, 'order/add_to_card.html')
+        
 
 @login_required(login_url='login')
 def add_to_cart(request, uid):

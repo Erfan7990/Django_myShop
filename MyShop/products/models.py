@@ -21,6 +21,7 @@ class Product(BaseModel):
     category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name="product_category")
     price = models.IntegerField()
     brand = models.CharField(max_length = 100, null = True)
+    is_stock = models.BooleanField(default=True)
     product_description = models.TextField(null = True)
 
     def save(self, *args, **kwargs): 
