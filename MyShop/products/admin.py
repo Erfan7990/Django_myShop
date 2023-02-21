@@ -13,7 +13,7 @@ class ProductImageAdmin(admin.StackedInline):
 @admin.register(Product)
 class ProductsAdmin(admin.ModelAdmin):
     inlines = [ProductImageAdmin]
-    list_display = ['product_name', 'slug', 'category', 'price']
+    list_display = ['product_name', 'slug', 'category', 'price', 'old_price','stock_quantity', 'is_stock']
 
 
 @admin.register(variationValue)

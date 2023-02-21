@@ -23,29 +23,33 @@ from django.views.generic import TemplateView
 def login_page(request):
         # if request.user.is_authenticated:
         #     return redirect('index')
-           
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            user_obj = User.objects.filter(username = username)
+       
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user_obj = User.objects.filter(username = username)
+        
+        if not user_obj.exists():
+            messages.warning(request, 'Account not Found')
+            return HttpResponseRedirect(request.path_info)
+        
+        user_obj = authenticate(username = username, password = password)
 
-            if not user_obj.exists():
-                messages.warning(request, 'Account not Found')
-                return HttpResponseRedirect(request.path_info)
-            
-            user_obj = authenticate(username = username, password = password)
-
-            if user_obj is not None:
-                login(request, user_obj)
-                # username = User.username
-                return redirect('index')
-            else:
-                messages.warning(request, 'Username or password is not correct')
-                return HttpResponseRedirect(request.path_info)
-
+        if user_obj is not None:
+            login(request, user_obj)
+            # username = User.username
+            return redirect('index')
+        else:
+            messages.warning(request, 'Username or password is not correct')
+            return HttpResponseRedirect(request.path_info)
+    
         # messages.warning(request, 'Invalid Information')
         # context = { 'username': username}
-        return render(request, 'account/login.html')
+    else:
+        if request.user.is_superuser == True:
+            messages.warning(request, 'Admin user can not login')
+        
+    return render(request, 'account/login.html')
 
 
 

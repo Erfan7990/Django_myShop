@@ -84,6 +84,7 @@
                   <th class="min-w-20x">Product</th>
                   <th>Category</th>
                   <th>Stock</th>
+                  <th>Number of Stock</th>
                   <th>Date</th>
                   <th>Price</th>
                   <th class="w-min" data-orderable="false"></th>
@@ -146,6 +147,9 @@
                   </td>
                   <td>
                     <div class="badge badge-sa-success">{{product.is_stock}}</div>
+                  </td>
+                  <td>
+                    <div class="badge badge-sa-success">{{product.stock_quantity}}</div>
                   </td>
                   <td>
                     <div class="text-reset">{{product.created_at}}</div>

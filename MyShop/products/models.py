@@ -16,12 +16,14 @@ class Category(BaseModel):
         return self.category_name
 
 class Product(BaseModel):
-    product_name = models.CharField(max_length = 100)
+    product_name = models.CharField(max_length = 1000)
     slug = models.SlugField(unique=True, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name="product_category")
     price = models.IntegerField()
+    old_price = models.IntegerField(null = True)
     brand = models.CharField(max_length = 100, null = True)
     is_stock = models.BooleanField(default=True)
+    stock_quantity = models.IntegerField(default=0)
     product_description = models.TextField(null = True)
 
     def save(self, *args, **kwargs): 

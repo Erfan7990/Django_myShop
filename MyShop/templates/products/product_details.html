@@ -91,7 +91,12 @@
                         </button>
                     </div>
                 </div>
+                {% if product.number_of_stock is 0 %}
+                <p class="btn btn-primary px-3">Out of Stock</p>
+                
+                {% else %}
                 <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                {% endif %}
             </div>
         </form>
             <div class="d-flex pt-2">
