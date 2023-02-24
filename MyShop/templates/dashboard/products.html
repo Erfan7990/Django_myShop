@@ -187,7 +187,7 @@
                         aria-labelledby="product-context-menu-0"
                       >
                         <li>
-                          <a class="dropdown-item" href="{% url 'add_product' %}">Edit</a>
+                          <a class="dropdown-item" href="{% url 'edit_product' product.slug %}">Edit</a>
                         </li>
                         <li>
                           <a class="dropdown-item" href="#">Duplicate</a>
@@ -200,7 +200,7 @@
                         </li>
                         <li><hr class="dropdown-divider" /></li>
                         <li>
-                          <a class="dropdown-item text-danger" href="#"
+                          <a class="dropdown-item text-danger" href="{% url 'delete_product' product.slug %}"
                             >Delete</a
                           >
                         </li>

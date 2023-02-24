@@ -1,4 +1,6 @@
-{% extends 'dashboard/base.html' %} {% block admin_content %}
+{% extends 'dashboard/base.html' %} 
+
+{% block admin_content %}
 <form action="" method="POST">
   {% csrf_token %}
   <div id="top" class="sa-app__body">
@@ -11,7 +13,7 @@
         <a href="#" class="btn btn-secondary me-3">Duplicate</a
         ><button class="btn btn-primary">Save</button>
       </div> {% endcomment %}
-       <div class="container">
+      <div class="container">
         <div class="py-5">
           <div class="row g-4 align-items-center">
             <div class="col">
@@ -24,23 +26,39 @@
                     <a href="app-products-list.html">Products</a>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">
+                    {% if addProductForm %}
                     Add Product
+                    {% else %}
+                    Edit Product
+                    {% endif %}
                   </li>
                 </ol>
               </nav>
-              <h1 class="h3 m-0">Add Product</h1>
+              <h1 class="h3 m-0">
+                {% if addProductForm %}
+                    Add Product
+                {% else %}
+                    Edit Product
+                {% endif %}
+              </h1>
             </div>
             <div class="col-auto d-flex">
               <a href="#" class="btn btn-secondary me-3">Duplicate</a
-              ><button class="btn btn-primary">Save</button>
+              ><button class="btn btn-primary">
+                {% if addProductForm %}
+                    Save
+                    {% else %}
+                    Update
+                    {% endif %}
+              </button>
             </div>
           </div>
         </div>
         <div
           class="sa-entity-layout"
           data-sa-container-query='{"920":"sa-entity-layout--size--md","1100":"sa-entity-layout--size--lg"}'
-        >
-          <div class="sa-entity-layout__body">
+        >        
+          <div class="sa-entity-layout__body ">
             <div class="sa-entity-layout__main">
               <div class="card">
                 <div class="card-body p-5">
@@ -48,23 +66,48 @@
                     <h2 class="mb-0 fs-exact-18">Basic information</h2>
                   </div>
                   <div class="mb-4">
-                    <label class="form-label">
-                      {{addProductForm.product_name.label}}
-                    </label>
-                    {{addProductForm.product_name}}
+                    {% if addProductForm %}
+                        <label class="form-label">
+                          {{addProductForm.product_name.label}}
+                        </label>
+                        {{addProductForm.product_name}}
+                    {% else %}
+                    <div class="mb-4">
+                      <label class="form-label">
+                        {{EditProductForm.product_name.label}}
+                      </label>
+                      {{EditProductForm.product_name}}
+                    {% endif %}
                   </div>
                   
                   <div class="mb-4">
-                    <label for="form-product/description" class="form-label"
-                      >{{addProductForm.product_description.label}}</label
-                    >
-                    {{addProductForm.product_description}}
+                    {% if addProductForm %}
+                      <label for="form-product/description" class="form-label">
+                        {{addProductForm.product_description.label}}
+                      </label>
+                      {{addProductForm.product_description}}
+                    {% else %}
+                      <label for="form-product/description" class="form-label">
+                        {{EditProductForm.product_description.label}}
+                      </label>
+                      {{EditProductForm.product_description}}
+                    {% endif %}
+                   
                   </div>
+
                   <div>
+                    {% if addProductForm %}
                     <label class="form-label">
                       {{addProductForm.brand.label}}
                     </label>
                     {{addProductForm.brand}}
+                    {% else %}
+                    <label class="form-label">
+                      {{EditProductForm.brand.label}}
+                    </label>
+                    {{EditProductForm.brand}}
+                    {% endif %}
+                    
                   </div>
                 </div>
               </div>
@@ -75,16 +118,33 @@
                   </div>
                   <div class="row g-4">
                     <div class="col">
-                      <label class="form-label">
-                        {{addProductForm.price.label}}
-                      </label>
-                      {{addProductForm.price}}
+                      {% if addProductForm %}
+                          <label class="form-label">
+                            {{addProductForm.price.label}}
+                          </label>
+                          {{addProductForm.price}}
+                      {% else %}
+                          <label class="form-label">
+                            {{EditProductForm.price.label}}
+                          </label>
+                          {{EditProductForm.price}}
+                      {% endif %}
+
                     </div>
                     <div class="col">
-                      <label class="form-label">
-                        {{addProductForm.old_price.label}}
-                      </label>
-                      {{addProductForm.old_price}}
+                      {% if addProductForm %}
+                        <label class="form-label">
+                          {{addProductForm.old_price.label}}
+                        </label>
+                        {{addProductForm.old_price}}
+                      {% else %}
+                        <label class="form-label">
+                          {{EditProductForm.old_price.label}}
+                        </label>
+                        {{EditProductForm.old_price}}
+                      {% endif %}
+
+                      
                     </div>
                   </div>
                   <div class="mt-4 mb-n2">
@@ -98,30 +158,51 @@
                     <h2 class="mb-0 fs-exact-18">Inventory</h2>
                   </div>
                   <div class="mb-4 pt-2">
+                    {% if addProductForm %}
                     <label class="form-check">
                       {{addProductForm.is_stock}}<span class="form-check-label">
                         {{addProductForm.is_stock.label}}</span
-                      ></label
-                    >
+                      ></label>
+                    {% else %}
+                    <label class="form-check">
+                      {{EditProductForm.is_stock}}<span class="form-check-label">
+                        {{EditProductForm.is_stock.label}}</span
+                      ></label>
+                    {% endif %}
                   </div>
                   <div>
-                    <label class="form-label"
-                      >{{addProductForm.stock_quantity.label}}</label
-                    >
-                    {{addProductForm.stock_quantity}}
+                    {% if addProductForm %}
+                    
+                      <label class="form-label"
+                        >{{addProductForm.stock_quantity.label}}</label>
+                      {{addProductForm.stock_quantity}}
+                    {% else %}
+                      <label class="form-label"
+                        >{{EditProductForm.stock_quantity.label}}</label>
+                      {{EditProductForm.stock_quantity}}
+                    {% endif %}
                   </div>
                 </div>
               </div>
             </div>
+            
             <div class="sa-entity-layout__sidebar">
               <div class="card w-100 mt-5">
                 <div class="card-body p-5">
                   <div class="mb-5">
-                    <h2 class="mb-0 fs-exact-18">
-                      {{addProductForm.category.label}}
-                    </h2>
+                    {% if addProductForm %}
+                      <h2 class="mb-0 fs-exact-18">
+                        {{addProductForm.category.label}}
+                      </h2>
+                      {{addProductForm.category}}
+                    {% else %}
+                    
+                      <h2 class="mb-0 fs-exact-18">
+                        {{EditProductForm.category.label}}
+                      </h2>
+                      {{EditProductForm.category}}
+                    {% endif %}
                   </div>
-                  {{ addProductForm.category}}
                   {% comment %} <select class="form-select">
                     {% for category in categories %}
                     <option >{{category}}</option>
@@ -138,6 +219,6 @@
       </div>
     </div>
   </div> 
- 
 </form>
 {% endblock admin_content %}
+

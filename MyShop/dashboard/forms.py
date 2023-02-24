@@ -10,7 +10,7 @@ from account.models import *
 class AddProductForm(ModelForm):
     product_name =  forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-box'}))
     
-    category =  forms.CharField(widget=forms.TextInput(attrs={'class': 'form-select input-box'}))
+    # category =  forms.CharField(widget=forms.TextInput(attrs={'class': 'form-select input-box'}))
     price =  forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control input-box'}))
     old_price =  forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control input-box'}))
     brand =  forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-box'}))
@@ -20,5 +20,13 @@ class AddProductForm(ModelForm):
     
     class Meta:
         model = Product
+        fields = ('__all__')
+        exclude = ('slug',)
+
+class AddCategoryForm(ModelForm):
+    category_name =  forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control input-box'}))
+    # category_image = forms.ImageField()
+    class Meta:
+        model = Category
         fields = ('__all__')
         exclude = ('slug',)
