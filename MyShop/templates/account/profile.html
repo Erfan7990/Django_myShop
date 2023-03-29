@@ -43,6 +43,7 @@
                                     <th scope="col">Order Items</th>
                                     <th scope="col">orderId</th>
                                     <th scope="col">paymentId</th>
+                                    <th scope="col">Amount</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -59,6 +60,7 @@
                                     </td>
                                     <td>{{ order.orderId }}</td>
                                     <td>{{ order.paymentId }}</td>
+                                    <td>{{ order.get_Total_orders_price }}</td>
                                   </tr>
                                   {% endfor %}
                                 </tbody>

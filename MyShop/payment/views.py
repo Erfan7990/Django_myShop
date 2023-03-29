@@ -36,7 +36,6 @@ class Payment_checkout(TemplateView):
             order_qs =  Orders.objects.filter(user = request.user, ordered=False)
             order_items = order_qs[0].orderItems.all()
             order_total = order_qs[0].get_Total_orders_price()
-           
 
             context = {
                     'Billing_Address_forms': billing_forms,
@@ -100,7 +99,7 @@ class Payment_checkout(TemplateView):
                     billing_address = BillingAddress.objects.filter(user = request.user)[0]
                     mypayment.set_shipping_info(shipping_to=billing_address.address, address=billing_address.address, city=billing_address.city, postcode=billing_address.zipcode, country=billing_address.country)
                     response_data = mypayment.init_payment()
-                    
+                   
                     return redirect(response_data['GatewayPageURL'])
 
                 return redirect('checkout')

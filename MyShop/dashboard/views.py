@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView , DeleteView
+from django.db.models import Q
+# from django.db.models import Sum
+from decimal import Decimal
 # Create your views here.
 
 # import models
@@ -181,3 +184,43 @@ def forgetPassword(request):
 
 def SignUp(request):
     return render(request, 'dashboard/signUp.html')
+
+
+class CustomerList(TemplateView):
+    def get(self, request, *args, **kwargs):
+        
+        users = User.objects.filter(is_superuser = False, is_staff = False)
+        users_info = Profile.objects.filter(Q(user__is_superuser=False), Q(user__is_staff=False))
+        orders = Orders.objects.filter(Q(user__is_superuser=False), Q(user__is_staff=False), ordered = True, user__username = users )
+        
+        print('++====++++++++++++>>')
+        print(orders[0].total_amount())
+        print('++===++++++++++++>>')
+        for user in users:
+            orders = Orders.objects.filter(Q(user__is_superuser=False), Q(user__is_staff=False), ordered = True, user = user )
+            total = Decimal(0)
+            for order in orders:
+                total += Decimal(order.get_Total_orders_price())
+            total_amount = total
+            print('++====++++++++++++>>')
+            print(total)
+            print('++===++++++++++++>>')
+
+
+        context= {
+            'users_info': users_info,
+            'amount': total_amount
+        }
+        
+        return render(request, 'dashboard/customers-list.html', context)
+    
+    
+    def post(self, request, *args, **kwargs):
+        pass
+    
+class CustomerInfo(TemplateView):
+    def get(self,request, *args, **kwargs):
+        return render(request, 'dashboard/customer-Info.html')
+    
+    def post(self, request, *args, **kwargs):
+        pass

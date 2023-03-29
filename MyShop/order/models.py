@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from products.models import *
 from base.models import BaseModel
+
+from decimal import Decimal
 # Create your models here.
 
 
@@ -70,6 +72,12 @@ class Orders(BaseModel):
         for order_item in self.orderItems.all():
             total += float(order_item.total_price())
         return format(total, '0.2f')
+    
+    def total_amount(self):
+        total = Decimal(0)
+        total += Decimal(self.get_Total_orders_price())
+        return total
+        
 
 
 class Banner(BaseModel):

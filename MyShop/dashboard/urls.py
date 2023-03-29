@@ -14,5 +14,9 @@ urlpatterns = [
     
     path('signIn/', SignIn, name="signIn"),
     path("signUp/", SignUp , name="signup"),
-    path('forget-password/', forgetPassword, name='forget_password')
+    path('forget-password/', forgetPassword, name='forget_password'),
+    
+    
+    path("customer-list/", CustomerList.as_view(), name="customer_list"),
+    path("customer-info/", CustomerInfo.as_view(), name="customer_info")
 ]
